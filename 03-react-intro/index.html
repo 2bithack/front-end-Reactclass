@@ -93,23 +93,35 @@
             constructor(props) {
                 super(props);
                 this.state = {
-                    countDown: 10,
+                    countDown: props.time,
+                    message: props.message,
+                    message2: props.message2,
                 };
-                this.timerId = setInterval(()=> this.tick(), 1000);
+                this.timerId = setInterval(() => this.tick(), 1000);
 
             }
             tick() {
-                if this.state.counDown == 0 {
-                    return
-                }
+
                 this.setState({countDown: this.state.countDown - 1});
 
                 console.log(`tick, ${this.state.countDown}`);
             }
             render() {
-                const displayTimer = this.state.countDown;
+                var displayTimer = null;
+                var duringMessage = this.state.message2;
+                if(this.state.countDown == 0) {
+                    duringMessage = null;
+                    displayTimer = this.state.message;
+                    clearInterval(this.timerId);
+                } else {
+                    displayTimer = this.state.countDown;
+                }
+
                 return (
-                    <Whateva whatever = {displayTimer} />
+                    <div>
+                        <Whateva whatever = {duringMessage} />
+                        <Whateva whatever = {displayTimer} />
+                    </div>
                 );
             }
         }
@@ -126,7 +138,7 @@
                 <Whateva whatever="Woot!" />
                 <Clock />
                 <ColorfulMessage color = "yellow" message = "Banana" size = "100px"/>
-                <Timer />
+                <Timer time = "5" message = "Boom!" message2 = "It has BEGUN!" />
             </div>,
             document.getElementById('app')
         );
