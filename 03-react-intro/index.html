@@ -1,0 +1,135 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>React Single Page Starter</title>
+    <script src="https://unpkg.com/react@15.3.2/dist/react.js"></script>
+    <script src="https://unpkg.com/react-dom@15.3.2/dist/react-dom.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.23/browser.min.js"></script>
+
+    <style>
+        body {
+            font-family: Helvetica;
+            font-size: 18px;
+        }
+
+        h1 {
+            /*text-align: center;*/
+        }
+        #title {
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="app">
+        <!-- App -->
+    </div>
+
+    <!-- JavaScript -->
+    <script type="text/babel">
+
+        // --------------------------------
+        // Simple Component
+        // --------------------------------
+        function Title(flops) {
+            return (
+                <div id="title">
+                    <h1>{flops.title}</h1>
+                    <div>{flops.whatever}</div>
+                    <Whateva whatever={flops.whatever} />
+                </div>
+            );
+        }
+        function Whateva(props) {
+            return (<h2>{props.whatever}</h2>);
+        }
+        function ColorfulMessage(props) {
+            const colorsNsize = {
+                color: props.color,
+                fontSize: props.size
+            };
+            return (
+                <div id="colorMessage">
+                    <div style={colorsNsize}>{props.message}</div>
+                </div>
+            );
+        }
+        // --------------------------------
+
+
+        // --------------------------------
+        // Stateful Component
+        // --------------------------------
+        class Clock extends React.Component {
+            constructor(props) {
+                super(props);
+                this.state = {
+                    date: new Date(),
+                    isOn: true
+                };
+                this.timerId = setInterval(() => this.tick(), 1000);
+            }
+            componentWillUnmount() {
+                clearInterval(this.timerId);
+            }
+            tick() {
+                this.setState({date: new Date()});
+            }
+            render() {
+                const date = this.state.date;
+                const h = date.getHours();
+                const m = date.getMinutes();
+                const s = date.getSeconds();
+                const displayTime = `${h}:${m}:${s}`;
+                return (
+                    <Title title={displayTime} />
+                );
+            }
+        }
+        class Timer extends React.Component{
+            constructor(props) {
+                super(props);
+                this.state = {
+                    countDown: 10,
+                };
+                this.timerId = setInterval(()=> this.tick(), 1000);
+
+            }
+            tick() {
+                if this.state.counDown == 0 {
+                    return
+                }
+                this.setState({countDown: this.state.countDown - 1});
+
+                console.log(`tick, ${this.state.countDown}`);
+            }
+            render() {
+                const displayTimer = this.state.countDown;
+                return (
+                    <Whateva whatever = {displayTimer} />
+                );
+            }
+        }
+
+        // --------------------------------
+
+        // Renders reacts virtual DOM.
+
+        // --------------------------------
+        ReactDOM.render(
+            <div>
+                <Title title = "HADOUKEN!" whatever="Whatever message...">
+                </Title>
+                <Whateva whatever="Woot!" />
+                <Clock />
+                <ColorfulMessage color = "yellow" message = "Banana" size = "100px"/>
+                <Timer />
+            </div>,
+            document.getElementById('app')
+        );
+    </script>
+</body>
+</html>
